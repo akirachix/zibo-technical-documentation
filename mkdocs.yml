@@ -1,6 +1,6 @@
 site_name: Zibo Technical Documentation
-site_url: https://github.io
-repo_url: https://github.com
+site_url: https://akirachix.github.io/zibo-technical-documentation/
+repo_url: https://github.com/akirachix/zibo-technical-documentation
 
 theme:
   name: material
@@ -47,7 +47,6 @@ nav:
   - Architecture: architecture.md
   - Backend: backend.md
   - Database: database.md
-  - AI and Prediction: ai.md
   - Frontend Web: frontend.md
   - Mobile: mobile.md
   - Security: security.md
