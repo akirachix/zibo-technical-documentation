@@ -1,9 +1,14 @@
-# zibo-technical-documentation
-Technical documentation for the zibo project
-cat << 'EOF' > README.md
 # Mbegu Link — Technical Documentation Site
 
 This repository contains the source files for the Mbegu Link technical documentation portal. The site is built using MkDocs and styled with the Material for MkDocs theme.
+
+## About Mbegu Link
+
+Mbegu Link is a community-controlled platform connecting seed custodians, Community Seed Banks (CSBs), and formal conservation institutions such as GeRRI, keeping seed identity, conservation history, testing, storage, movement, and conservation needs connected.
+
+*   **Seed Registry & Conservation Records:** Structured records for seed identity, local and taxonomic names, source, quantity, storage, testing, germination, regeneration, history, and provenance.
+*   **Seed Movement:** Track transfers, loans, requests, sharing, and custody (Sent – In Transit – Received & Confirmed), with structured CSB - GeRRI assistance requests.
+*   **Knowledge Sharing:** Share seed knowledge through text, images, and video, with controlled visibility: private, institutional, or public.
 
 ## Repository Structure
 
@@ -49,4 +54,3 @@ mkdocs build --strict
 ~/.local/bin/mkdocs build --strict
 ```
 The --strict flag converts warnings into hard errors. Ensure this check passes with zero warnings before pushing your branch.
-EOF
