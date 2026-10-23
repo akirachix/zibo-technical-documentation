@@ -1,6 +1,7 @@
 site_name: Zibo Technical Documentation
-site_url: https://akirachix.github.io/zibo-technical-documentation/
+site_url: https://github.io
 repo_url: https://github.com
+
 theme:
   name: material
   logo: assets/brand/logo.png
@@ -17,8 +18,10 @@ theme:
     - search.suggest
     - search.highlight
     - content.code.copy
+
 extra_css:
   - stylesheets/extra.css
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -33,8 +36,10 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+
 plugins:
   - search
+
 nav:
   - Home: index.md
   - Overview: overview.md
