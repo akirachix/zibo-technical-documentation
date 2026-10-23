@@ -1,0 +1,13 @@
+:root {
+  --brand-primary: #004F2E;
+  --brand-accent: #F8BF14;
+}
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--brand-primary);
+  --md-accent-fg-color: var(--brand-accent);
+  --md-typeset-a-color: var(--brand-primary);
+}
+.md-header__button.md-logo img {
+  height: 2.4rem;
+  width: auto;
+}

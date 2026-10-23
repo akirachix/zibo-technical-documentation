@@ -1,0 +1,51 @@
+site_name: Zibo Technical Documentation
+site_url: https://github.io
+repo_url: https://github.com
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/logo.png
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+extra_css:
+  - stylesheets/extra.css
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+plugins:
+  - search
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - Getting Started: getting-started.md
+  - Architecture: architecture.md
+  - Backend: backend.md
+  - Database: database.md
+  - AI and Prediction: ai.md
+  - Frontend Web: frontend.md
+  - Mobile: mobile.md
+  - Security: security.md
+  - Testing and QA: testing.md
+  - Deployment: deployment.md
+  - Glossary: glossary.md
