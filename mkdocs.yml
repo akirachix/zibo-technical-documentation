@@ -1,10 +1,10 @@
 site_name: Zibo Technical Documentation
-site_url: https://github.io
+site_url: https://akirachix.github.io/zibo-technical-documentation/
 repo_url: https://github.com
 theme:
   name: material
-  logo: assets/logo.png
-  favicon: assets/logo.png
+  logo: assets/brand/logo.png
+  favicon: assets/brand/logo.png
   palette:
     - scheme: default
       primary: custom
