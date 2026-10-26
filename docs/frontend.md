@@ -122,7 +122,7 @@ zibo-frontend/
 │
 ├── package.json                         # Script automation registries, tasks, and system blocks
 └── tailwind.config.js                   # Tailwind utility layout style mapping parameter lines
-Use code with caution.
+
 
 4. Architecture Layers
 
