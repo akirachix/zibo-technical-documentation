@@ -14,9 +14,9 @@
 
 ## 01 · Overview
 
-The **Mbegu Link Frontend Web Application (`zibo-frontend`)** is a Next.js application built with React and Tailwind CSS. It serves as the primary interface for the Mbegu Link digital agriculture network.
+The **Mbegu Link Frontend Web Application (`zibo-frontend`)** is a Next.js application built with React and Tailwind CSS. It provides the web interface for the Mbegu Link digital agriculture network, connecting community seed banks with institutional conservation specialists.
 
-The application implements role-based navigation, directing authenticated users to workspaces aligned with their operational responsibilities.
+The application supports role-based navigation, directing authenticated users to workspaces aligned with their operational responsibilities. Its responsive interface accommodates institutional desktop workflows and community-facing mobile layouts.
 
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:24px 0;">
 
@@ -34,7 +34,7 @@ The application implements role-based navigation, directing authenticated users 
 
 </div>
 
-The frontend communicates asynchronously with the Mbegu Link backend through REST APIs over HTTP. It presents backend data through interface components, shared application state, and workflow-specific views.
+The frontend communicates with the Mbegu Link backend through REST API requests over HTTP. It renders information returned by backend services and coordinates interface updates through shared application state and workflow-specific components.
 
 ### Main Functional Areas
 
@@ -43,7 +43,7 @@ The frontend communicates asynchronously with the Mbegu Link backend through RES
 | **Role-Based Authentication** | Login, role-specific routing, session management, and password recovery workflows. |
 | **GeRRI Specialist Workspace** | Record verification, submission reviews, conservation information, and administrative operations. |
 | **CSB Coordinator Workspace** | Seed registration, deposit records, seed loans, and community operations. |
-| **Notifications** | Status updates, notification messages, and unread indicators. |
+| **Notifications** | Notification messages, workflow updates, and unread indicators. |
 | **Profile and Settings** | User profile management, appearance preferences, and account settings. |
 
 ---
@@ -62,57 +62,84 @@ The frontend uses a modular architecture that separates application routing, pre
 </tr>
 </thead>
 <tbody>
-<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Next.js / React</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Application framework, routing, and interface components.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/app/</code>, <code>src/components/</code></td></tr>
-<tr style="background:#F5FAF5;"><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>HTTP Client</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">REST API communication and request configuration.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/session.js</code>, <code>src/lib/authApi.js</code></td></tr>
-<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>React Context</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Shared application state and cross-component updates.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/portalStore.js</code></td></tr>
-<tr style="background:#F5FAF5;"><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Tailwind CSS</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Responsive layouts and utility-based styling.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>tailwind.config.js</code></td></tr>
-<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Inter / Roboto</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Typography and interface hierarchy.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Font configuration</td></tr>
-<tr style="background:#F5FAF5;"><td style="padding:12px;"><strong>Jest</strong></td><td style="padding:12px;">Automated testing.</td><td style="padding:12px;">Test suite and configuration</td></tr>
+<tr>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Next.js / React</strong></td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">Application framework, routing, and reusable interface components.</td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/app/</code>, <code>src/components/</code></td>
+</tr>
+<tr style="background:#F5FAF5;">
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>HTTP Client</strong></td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">REST API communication and request configuration.</td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/session.js</code>, <code>src/lib/authApi.js</code></td>
+</tr>
+<tr>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>React Context</strong></td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">Shared application state and cross-component updates.</td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/portalStore.js</code></td>
+</tr>
+<tr style="background:#F5FAF5;">
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Tailwind CSS</strong></td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">Responsive layouts and utility-based styling.</td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>tailwind.config.js</code></td>
+</tr>
+<tr>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Inter / Roboto</strong></td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">Typography and interface hierarchy.</td>
+<td style="padding:12px;border-bottom:1px solid #E4EDE5;">Font configuration</td>
+</tr>
+<tr style="background:#F5FAF5;">
+<td style="padding:12px;"><strong>Jest</strong></td>
+<td style="padding:12px;">Automated testing of application behaviour and components.</td>
+<td style="padding:12px;">Test suite and configuration</td>
+</tr>
 </tbody>
 </table>
 </div>
 
-## 2.1 · Visual Appearance and Design System
+### 2.1 · Visual Appearance and Design System
 
 The interface uses a green-and-white visual identity inspired by Mbegu Link's focus on agriculture, conservation, and community collaboration.
 
 <div style="display:flex;flex-wrap:wrap;gap:12px;margin:22px 0;">
+
 <div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
 <div style="height:65px;background:#185C32;"></div>
 <div style="padding:12px;background:#FFFFFF;"><strong>Forest Green</strong><br><code>#185C32</code></div>
 </div>
+
 <div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
 <div style="height:65px;background:#237A43;"></div>
 <div style="padding:12px;background:#FFFFFF;"><strong>Brand Green</strong><br><code>#237A43</code></div>
 </div>
+
 <div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
 <div style="height:65px;background:#E7F2E8;"></div>
 <div style="padding:12px;background:#FFFFFF;"><strong>Soft Green</strong><br><code>#E7F2E8</code></div>
 </div>
+
 <div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
 <div style="height:65px;background:#FFFFFF;"></div>
 <div style="padding:12px;background:#FFFFFF;"><strong>White</strong><br><code>#FFFFFF</code></div>
 </div>
+
 </div>
 
-### Typography
+#### Typography
 
 - **Inter:** Primary typography for workspace labels, page headings, and body text.
 - **Roboto:** Supporting typography for selected headings and analytical information.
 
-### Light and Dark Modes
+#### Light and Dark Modes
 
-The application appearance system covers dashboard layouts, cards, forms, navigation, and notifications. Light and dark modes maintain consistent visual hierarchy and readable text.
+The appearance system supports theme consistency across dashboard layouts, cards, forms, navigation, and notifications. Light and dark modes are intended to preserve readable text, clear visual hierarchy, and consistent component styling.
 
 The documented theme configuration is located in `src/lib/theme.js`.
 
-### Input Components
+#### Input Components and Accessibility
 
-Form controls use consistent labels, spacing, borders, and validation feedback. The interface uses associated `htmlFor` and `id` attributes to improve form accessibility.
+Form controls use consistent labels, spacing, borders, and validation feedback. Associated `htmlFor` and `id` attributes help users identify form controls and support assistive technologies.
 
----
-
-## 2.2 · Lifecycle Status and Visual Indicators
+### 2.2 · Lifecycle Status and Visual Indicators
 
 Workflow statuses use distinct colors to communicate the state of seed records, loans, deposits, and verification processes.
 
@@ -157,7 +184,7 @@ The documented status configuration is `src/lib/loanStatus.js`.
 
 ## 03 · Project Structure
 
-The `zibo-frontend` repository separates application routes, reusable components, shared utilities, configuration, and automated tests.
+The `zibo-frontend` repository separates application routes, reusable components, shared utilities, configuration, assets, and automated tests.
 
 ```text
 zibo-frontend/
@@ -231,31 +258,33 @@ zibo-frontend/
 └── tailwind.config.js
 ```
 
+*Note: This tree documents the files represented in the provided project structure. Additional files may exist in the repository.*
+
 ### Directory Responsibilities
 
 | Directory / File | Responsibility |
 |:---|:---|
-| `src/app/` | Application routes and shared layouts |
-| `src/components/auth/` | Authentication forms and components |
-| `src/components/brand/` | Branding and logo components |
-| `src/components/onboarding/` | Onboarding interface components |
-| `src/components/portal/` | Dashboard layouts, notifications, and status indicators |
-| `src/components/splash/` | Application initialization and splash interface |
-| `src/lib/api.js` | Shared API communication |
-| `src/lib/authApi.js` | Authentication API operations |
-| `src/lib/portalApi.js` | Portal API operations |
-| `src/lib/portalStore.js` | Shared portal state |
-| `src/lib/session.js` | HTTP client and session request configuration |
-| `src/lib/theme.js` | Theme and appearance configuration |
-| `__tests__/` | Automated application tests |
-| `package.json` | Dependencies and project scripts |
-| `tailwind.config.js` | Tailwind CSS configuration |
+| `src/app/` | Application routes and shared layouts. |
+| `src/components/auth/` | Authentication forms and related components. |
+| `src/components/brand/` | Branding and logo components. |
+| `src/components/onboarding/` | Onboarding interface components. |
+| `src/components/portal/` | Dashboard layouts, notifications, and status indicators. |
+| `src/components/splash/` | Application initialization and splash interface. |
+| `src/lib/api.js` | Shared API communication. |
+| `src/lib/authApi.js` | Authentication API operations. |
+| `src/lib/portalApi.js` | Portal API operations. |
+| `src/lib/portalStore.js` | Shared portal state. |
+| `src/lib/session.js` | HTTP client and session request configuration. |
+| `src/lib/theme.js` | Theme and appearance configuration. |
+| `src/__tests__/` | Automated application tests. |
+| `package.json` | Project dependencies and scripts. |
+| `tailwind.config.js` | Tailwind CSS configuration. |
 
 ---
 
 ## 04 · Architecture Layers
 
-The frontend separates the presentation, state management, service, and data-handling responsibilities.
+The frontend separates presentation, state management, service communication, and backend responsibilities. This separation helps keep interface components focused on rendering and user interaction while API-related operations are handled through shared service utilities.
 
 <div style="border:1px solid #D7E7DA;border-radius:14px;padding:24px;background:#F8FBF8;margin:24px 0;">
 
@@ -297,15 +326,33 @@ Responsible for rendering pages, dashboard layouts, authentication forms, reusab
 
 ### State Management Layer
 
-Coordinates shared portal state, interface updates, notification indicators, and relevant application context through React Context and related hooks.
+Coordinates shared portal state, interface updates, notification indicators, and application context through React Context and related hooks.
 
 ### Service Layer
 
 Handles API requests, authentication headers, response processing, and communication with backend endpoints.
 
-### Data and Model Layer
+### Backend and Data Layer
 
-Represents the data exchanged through API contracts, including seed records, workflow statuses, user information, and supported application preferences.
+The backend is responsible for business rules, data persistence, and processing requests received from the frontend. The frontend consumes data through the API contracts and displays information such as seed records, workflow statuses, and user details.
+
+---
+
+## 05 · Testing
+
+Automated tests help verify the behaviour of authentication components, application views, session utilities, API-related functionality, and portal workflows.
+
+The documented test suite includes:
+
+- Authentication form tests.
+- Login and landing-page tests.
+- Onboarding component tests.
+- Password-screen tests.
+- Portal and notification tests.
+- Session and API utility tests.
+- OpenAPI specification tests.
+
+Tests should be run using the scripts configured in `package.json`. The exact commands depend on the repository's current test configuration.
 
 ---
 
