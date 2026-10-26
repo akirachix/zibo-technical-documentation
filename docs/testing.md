@@ -3,12 +3,14 @@
 ## Quality Assurance Strategy
 
 Mbegu Link holds records that communities depend on for conservation decisions, so quality assurance focuses on the failures that matter most: a seed record that loses its history, a boundary between CSBs that leaks, a transfer that misassigns custody, or a threshold flag that fires wrongly. Testing therefore concentrates on record integrity, privacy isolation, and request lifecycles.
+QA strategy link — <a href="https://docs.google.com/document/d/18CuEQn57O2Yyi70AaMuFGX6gqoHmYPEMez9FFyFRur0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">View in Google Doc</a>
 
 ### Test Levels
 - **Unit Tests:** Validate single core methods and business constraints (germination calculations, `seeds_germinated` $\le$ `seeds_tested`, threshold boundaries, and append-only correction lines).
 - **Integration Tests:** Cover boundary layers between the FastAPI service and the PostgreSQL database engine (multi-tenant tenant schema isolation, route guards, token lifespan invalidation, and server-side row permissions).
 - **End-to-End (E2E) Tests:** Trace user workflow paths across application clients (custodian entry logging, coordinator transfer approval tracks, and GeRRI support ticket workflows).
 - **User Acceptance Testing (UAT):** Checked directly with regional custodians and network coordinators from partner Community Seed Banks to confirm software layout accuracy prior to production builds.
+QA Test cases - link — <a href="https://docs.google.com/spreadsheets/d/1IWvGNbutyyu8_P2JL0YCgahUEA5XxGamPDlirPBMF0I/edit?usp=sharing" target="_blank" rel="noopener noreferrer">View in Excel sheet</a>
 
 ### Defect Severity Definitions
 - **Critical:** Complete data loss, multi-tenant isolation breach, misassigned seed custody, or false flags leading to crop damage.
@@ -25,21 +27,7 @@ Mbegu Link holds records that communities depend on for conservation decisions, 
 | **TC-QA-03** | Registry | High | Functional | Register a variety with an unknown scientific taxonomy name | Record saved successfully with a `NULL` scientific metadata marker |
 | **TC-QA-04** | Registry | High | Boundary | Germination result exactly at the configured threshold boundary (e.g., 75.00%) | Attention flag does not fire; boundary is handled inclusively per community rule |
 | **TC-QA-05** | Registry | High | Negative | Two custodians register the same local seed name for different biological crops | Two distinct variety records generated; silent deduplication merges blocked |
-| **TC-QA-06** | Registry | Critical | Negative | Custodian attempts to edit or overwrite an old germination test log entry | Direct modification blocked; adjustments require a new event entry referencing the original row |
-| **TC-QA-07** | Movement | Critical | Functional | Full seed transfer lifecycle execution track: Sender initiates $\rightarrow$ Receiver confirms | Custody updates to receiver only upon final receipt verification |
-| **TC-QA-08** | Movement | Critical | Negative | Seed transfer request is never confirmed within the agreed network duration | Status locks as *In Progress*; lot stays visible on coordinator outstanding list |
-| **TC-QA-09** | Movement | High | Negative | Seed parcel is explicitly marked as lost or damaged in transit | Custody reverts to sender; mandatory exception trace note appended to history |
-| **TC-QA-10** | Movement | Medium | Boundary | Partial transfer confirmation: Receiver logs less than total shipped quantity | Received quantity added to target vault; remainder stays on sender profile balances |
-| **TC-QA-11** | Movement | High | Negative | Activated seed loan passes due date without an inbound return transaction | Loan flagged as past due; coordinator dashboard raises overdue warnings |
-| **TC-QA-12** | Attention | Critical | Functional | Measured germination rates fall below community-configured percentage thresholds | Attention flags trigger prompts for review; no automated database actions taken |
-| **TC-QA-13** | Attention | High | Negative | Coordinator adjusts minimum threshold levels after logging test histories | Historical attention flags stay static; changes apply only to future events |
-| **TC-QA-14** | Support | Critical | Security | GeRRI specialist attempts to pull seed metrics not linked to any active support request | `403 Forbidden` error; route guard blocks unauthorized regional database scans |
-| **TC-QA-15** | Support | High | Negative | GeRRI specialist declines an active institutional support request | Seed lot ownership remains with the originating CSB; rejection rationale logged |
-| **TC-QA-16** | Knowledge | Critical | Security | Hub entry containing farmer names and exact GPS coordinates submitted for public sharing | Publication blocked; item queued for administrative review and consent matching |
-| **TC-QA-17** | Knowledge | High | Security | Coordinator issues a withdrawal instruction for an active public knowledge entry | Content hidden from search views; logging logs action with hard removal notices |
-| **TC-QA-18** | Knowledge | High | Negative | User uploads an executable file disguised with a fake extension (e.g., `.exe` as `.mp4`) | Blocked by server-side byte scanners; `upload_status` records as `failed` |
-| **TC-QA-19** | Auth | Critical | Security | User triggers three consecutive invalid password authentication requests | Account locked; event logged; unlock requires single-use verification code |
-| **TC-QA-20** | Concurrency| High | Negative | Two application users attempt to update the same seed holding row simultaneously | Server returns a concurrency conflict error to the last request; prevents overwrite collisions |
+
 
 ## End-to-End Testing with Cypress
 
@@ -125,6 +113,9 @@ Cypress.Commands.add('loginAsCoordinator', (csb) => {
 * **Database State Reset:** Execute an explicit database reseed hook (`cy.task('db:seed')`) before launching each test execution loop to clear out stray mutations.
 * **Boundary Validation Security:** Keep the explicit `403-isolation` checks active within every single end-to-end journey. These assertions serve as high-value perimeter guards, mapping back to core security requirements `TC-QA-01` and `TC-QA-14`.
 * **Case ID Numbering Scheme:** The test cases are systematically numbered `TC-QA-01` through `TC-QA-20` to separate them from separate component module tracking ranges within shared spreadsheets.
+
+<details>
+<summary style="cursor: pointer; color: #004F2E; font-weight: bold; margin: 15px 0; text-decoration: underline;">📋 Show API Contract Testing Details</summary>
 
 ## API Contract Testing via Postman
 
@@ -216,10 +207,12 @@ Registers storage system tracking flags separate from underlying binary uploads.
 #### 8. Validation Error Protection Tracking (`POST`)
 Ensures the server rejects structurally malformed parameters at the API perimeter gate.
 * **Target Under Testing:** Malformed UUID string parameter validations.
-* **Expected Error Response Blueprint (`422 Unprocessable Entity`):**
+* **Expected Error Response Blueprint (`422 Unprocessable Entity`):
   ```json
   {
     "msg": "Input should be a valid UUID, Invalid group length in group 0: expected 8, found 9",
     "input": "81f606ac5-e1f7-4111-8111-111111111111"
   }
   ```
+
+</details>
