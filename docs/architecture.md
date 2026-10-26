@@ -52,7 +52,7 @@ This page shows the system structure: the components, how data flows between the
 |---|---|---|
 | **variety** | Each seed variety once, with local and scientific names (unknown accepted) | 1→many holdings and knowledge entries |
 | **holding** | The core seed record: a quantity of one variety held by one custodian or CSB, carrying the Mbegu Link ID, source provenance and parent-holding link for lot lineage | Links to all events, transfers and requests |
-| **event** | Append-only dated history: germination tests, storage observations, regeneration, safety duplication; corrections are new rows referencing the original | Belongs to one holding |
+| **event** | Append only dated history: germination tests, storage observations, regeneration, safety duplication; corrections are new rows referencing the original | Belongs to one holding |
 | **transfer** | Seed movement between custodians or organisations, with custody rules and exception notes | Belongs to one holding |
 | **request** | Structured loan, storage and conservation-support requests with lifecycle status | Links requester, holding and target organisation |
 | **knowledge_entry** | Practical knowledge with private (default) or public visibility, tags and archive flag | Belongs to one organisation; may link one variety |
