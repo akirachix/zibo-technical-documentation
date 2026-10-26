@@ -57,14 +57,13 @@ html, body {
 }
 
 .hero-text {
-  color: #FFFFFF !important; /* Normal white for maximum visibility over dark tint */
+  color: #FFFFFF !important; 
   margin: 0 !important;
   font-size: 1.05rem;
   line-height: 1.6;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Lightbox */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -112,7 +111,6 @@ html, body {
   to { opacity: 1; }
 }
 
-/* Header - pure dark green */
 .md-header {
   background: #004F2E !important;
 }
