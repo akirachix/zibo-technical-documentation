@@ -1,0 +1,177 @@
+# Database Storage Strategy & Media Architecture
+
+**Document Version:** 1.0.0
+**Project:** Mbegu Link Core Infrastructure
+**Author/Group:** Group Zibo
+
+## 1. Relational Database Engine Strategy (PostgreSQL)
+
+The structured transactional ledger for the Mbegu Link ecosystem is deployed on a centralized PostgreSQL relational database. This engine is configured to separate transactional business logic, seed identity histories, and security boundaries.
+
+### Structured Tenant Isolation & Security Layer
+
+| Feature | Description |
+| --- | --- |
+| Row-Level Security (RLS) | To safeguard user privacy and seed location sovereignty, the database implements native row-level security. Every database query executed by an authenticated client automatically triggers an isolation filter matching their verified organizational boundary. |
+| Audit Trail Integration | Administrative updates or lifecycle modifications automatically populate audit-trail fields containing user tracking IDs and explicit system datestamps to ensure continuous accountability. |
+
+### Core Data Schema Definitions
+
+#### 1. Core Users and Identity Table
+
+```sql
+CREATE TABLE users (
+    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(50) CHECK (role IN ('Custodian', 'Coordinator', 'Specialist')),
+    organization_id UUID NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 2. Central Seed Lot Registry
+
+```sql
+CREATE TABLE seed_batches (
+    mbegu_id VARCHAR(100) PRIMARY KEY, -- Formatted Unique Mbegu Link Lot Identifier Code
+    local_name VARCHAR(255) NOT NULL,
+    taxonomy_name VARCHAR(255) NOT NULL,
+    community_identifier VARCHAR(100),
+    quantity DECIMAL(12, 2) NOT NULL,
+    duplication_status VARCHAR(50) DEFAULT 'NOT_DUPLICATED',
+    is_private BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 3. Append-Only Conservation and Germination Records
+
+```sql
+CREATE TABLE conservation_records (
+    record_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    mbegu_id VARCHAR(100) REFERENCES seed_batches(mbegu_id) ON DELETE RESTRICT,
+    germination_rate DECIMAL(5, 2) NOT NULL,
+    storage_temp DECIMAL(4, 1),
+    observation_date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT
+);
+```
+
+#### 4. Seed Movement and Custody Exchange Ledger
+
+```sql
+CREATE TABLE seed_transfers (
+    transfer_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    mbegu_id VARCHAR(100) REFERENCES seed_batches(mbegu_id) ON DELETE RESTRICT,
+    origin_holder_id UUID NOT NULL,
+    destination_id UUID NOT NULL,
+    quantity DECIMAL(12, 2) NOT NULL,
+    status VARCHAR(50) CHECK (status IN ('Pending', 'Completed', 'Exception')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 5. Institutional Support Request Tracking
+
+```sql
+CREATE TABLE support_requests (
+    request_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    origin_csb_id UUID NOT NULL,
+    gerri_specialist_id UUID,
+    status VARCHAR(50) CHECK (status IN ('Submitted', 'Under Review', 'More Info Requested', 'Accepted', 'Completed', 'Rejected')),
+    description TEXT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Immutable Security Automation
+
+To ensure the conservation tracking record cannot be altered or corrupted over time, an explicit native trigger blocks structural record mutations across the ledger:
+
+```sql
+CREATE OR REPLACE FUNCTION block_ledger_mutations()
+RETURNS TRIGGER AS $$
+BEGIN
+  RAISE EXCEPTION 'CRITICAL SECURITY ERROR: MUTATION ATTEMPTED ON APPEND-ONLY LEDGER LOGS DETECTED.';
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER lock_conservation_records_mutation
+BEFORE UPDATE OR DELETE ON conservation_records
+FOR EACH ROW EXECUTE FUNCTION block_ledger_mutations();
+```
+
+## 2. Unstructured Media Storage Strategy & API Decoupling
+
+To prevent database bloat, low-tier device crashes, and system performance drops, all unstructured files (such as short educational demonstration videos, local community observation photos, and field guide documents) are stored on an external cloud object storage tier rather than embedded directly in the relational database.
+
+### Media Processing and Offloading Topology
+
+```
+[ Mobile / PWA Client ] -> Uploads File -> [ API Gateway Node ]
+|
++-------------------------+-------------------------+
+|                                                   |
+v (Upload Binary Stream)                            v (Write Reference URL Meta)
+[ External Object Media Storage ]                        [ Local PostgreSQL Ledger ]
+```
+
+| Component | Details |
+| --- | --- |
+| S3-Compatible Media Bucket | Stores: MP4 Video / JPG Images |
+| knowledge_hub_media Table | Stores: URL String Asset Links |
+
+### Relational Blob Meta-Mapping
+
+The PostgreSQL database keeps track of files by storing the reference metadata and public URLs generated by the object storage bucket inside a dedicated table. This table links knowledge sharing posts to their media assets:
+
+#### 6. Knowledge Sharing Registry
+
+```sql
+CREATE TABLE knowledge_entries (
+    entry_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    author_id UUID REFERENCES users(user_id),
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    visibility_state VARCHAR(20) DEFAULT 'Private' CHECK (visibility_state IN ('Public', 'Private')),
+    verification_status VARCHAR(30) DEFAULT 'pending_verification',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### 7. Media Blob Reference Mapping
+
+```sql
+CREATE TABLE knowledge_hub_media (
+    media_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    entry_id UUID REFERENCES knowledge_entries(entry_id) ON DELETE CASCADE,
+    file_type VARCHAR(50) NOT NULL, -- e.g., 'video/mp4', 'image/jpeg'
+    storage_url TEXT NOT NULL,     -- Fully qualified public access endpoint URL string
+    file_size_bytes INT NOT NULL,
+    uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Media Ingestion Workflow
+
+1. **Client Signature Handshake:** The client (Mobile or PWA) requests a secure, pre-signed upload token from the Node.js backend API Gateway before sending any file data.
+2. **Direct Cloud Ingestion:** The client uses the pre-signed token to upload the file directly to the cloud storage bucket. This avoids bottlenecking the main API Gateway with large file streams.
+3. **Gateway Meta-Logging:** Once the cloud upload finishes, the client sends a small confirmation payload back to the API Gateway. The gateway then logs the resulting file URL string directly into the database mapping table.
+
+## 3. Communication Bridge Strategy (Africa's Talking API)
+
+The system bridges digital internet workflows with offline mobile infrastructure by integrating an external communication gateway. This handles mobile authentication steps and secure multi-user validations across remote locations.
+
+### Shared Verification Blueprint
+
+```
+[ Custodian Mobile App ] -> (Triggers Sign Up / Loan) -> [ Mbegu Link API Gateway ]
+|
+v (Sends Outbound API REST Request)
+[ Africa's Talking API Service ]
+|
+v (Delivers Telephony Payloads)
+[ Custodian Device Network Tray ]
+```
