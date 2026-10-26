@@ -32,7 +32,7 @@ The real-time online mobile client utilized by Seed Custodians requires distribu
 | 4. Store Listing Asset & Metadata Entry | Complete all mandatory compliance criteria, privacy policies, target age demographic questionnaires, and data safety forms. Upload high-resolution visual layout screenshots displaying user interfaces across distinct display dimensions. |
 | 5. Production Release Promotion & Review Request | Navigate to the Production track dashboard, create a new release package, pull forward the verified artifact from the internal testing stage, and initiate the Start Rollout to Production validation script to submit the codebase to Google's app security review team. |
 
-## 3. API Backend Gateway & Relational Migration Blueprint
+## 3. API Backend Gateway & Relational Migration Blueprint (Heroku)
 
 The centralized API engine is deployed onto an enterprise container architecture or a cloud Linux instance linked directly to a managed PostgreSQL cluster enforcing strict Row-Level Security (RLS) constraints.
 
@@ -50,15 +50,10 @@ The centralized API engine is deployed onto an enterprise container architecture
 Save the following production migration script as `migrations/20261026_001_create_core_ledger_tables.js` within your backend repository directory structure. This script builds out your main seed batch tracking and immutable verification ledgers:
 
 ```javascript
-/**
- * Mbegu Link Core Database Schema Migration
- * Target Engine: PostgreSQL 15+ / 16+
- * Purpose: Implements Core FTR-02/FTR-03 Tables with Strict Mutability Prevention Checks
- */
 
 exports.up = async function(knex) {
   return knex.schema
-    // 1. Core Users Table
+
     .createTable('users', (table) => {
       table.uuid('user_id').primary().defaultTo(knex.raw('gen_random_uuid()'));
       table.string('email').unique().notNullable();
@@ -68,18 +63,6 @@ exports.up = async function(knex) {
       table.timestamps(true, true);
     })
 
-    // 2. Central Relational Seed Lot Registry Table
-    .createTable('seed_batches', (table) => {
-      table.string('mbegu_id').primary(); // Formatted Unique Mbegu Link Identifier Lot Code
-      table.string('local_name').notNullable();
-      table.string('taxonomy_name').notNullable();
-      table.string('community_identifier').nullable();
-      table.decimal('quantity', 12, 2).notNullable();
-      table.string('duplication_status').defaultTo('NOT_DUPLICATED');
-      table.timestamps(true, true);
-    })
-
-    // 3. Append-Only Conservation Records (Germination Tests / Storage Logs)
     .createTable('conservation_records', (table) => {
       table.uuid('record_id').primary().defaultTo(knex.raw('gen_random_uuid()'));
       table.string('mbegu_id').references('mbegu_id').inTable('seed_batches').onDelete('RESTRICT').onUpdate('CASCADE');
@@ -88,25 +71,6 @@ exports.up = async function(knex) {
       table.timestamp('observation_date').defaultTo(knex.fn.now());
       table.text('notes').nullable();
     })
-    .then(async () => {
-      // Inject Native Database Trigger to Block Out-of-Scope Data Deletion or Record Mutation Attempts
-      await knex.raw(`
-        CREATE OR REPLACE FUNCTION block_ledger_mutations()
-        RETURNS TRIGGER AS $$
-        BEGIN
-          RAISE EXCEPTION 'CRITICAL SECURITY ERROR: MUTATION ATTEMPTED ON APPEND-ONLY LEDGER LOGS DETECTED.';
-          RETURN NULL;
-        END;
-        $$ LANGUAGE plpgsql;
-      `);
-
-      await knex.raw(`
-        CREATE TRIGGER lock_conservation_records_mutation
-        BEFORE UPDATE OR DELETE ON conservation_records
-        FOR EACH ROW EXECUTE FUNCTION block_ledger_mutations();
-      `);
-    });
-};
 
 exports.down = async function(knex) {
   return knex.schema
