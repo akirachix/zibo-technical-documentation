@@ -1,110 +1,218 @@
-Frontend Web Documentation
+# <span style="color:#237A43">Frontend Web Documentation</span>
 
+<div style="background:linear-gradient(135deg,#164E2B 0%,#237A43 60%,#4D9B62 100%);color:white;padding:36px 32px;border-radius:16px;margin:24px 0;">
+  <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:0.85;">MBEGU LINK · ZIBO</div>
+  <h2 style="color:white;font-size:30px;margin:14px 0 10px;">Connecting Communities Through Seed Conservation</h2>
+  <p style="font-size:15px;line-height:1.8;margin:0;color:#F0FDF4;">A role-based web platform for community seed banks and institutional specialists, bringing seed records, conservation workflows, and operational information into one connected experience.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;">
+    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">Next.js</span>
+    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">React</span>
+    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">Tailwind CSS</span>
+    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">REST API</span>
+  </div>
+</div>
 
-1. Overview
+## 01 · Overview
 
-The Mbegu Link Frontend web application (zibo-frontend) is an advanced Next.js-based single-page application engine utilizing React and Tailwind CSS. It serves as the primary orchestration center for the Mbegu Link digital agriculture network.
-The platform implements an integrated, role-based conditional routing architecture. Upon successful gateway authentication, users are evaluated against system-level permissions and dynamically routed to specialized dashboard shells customized specifically for their operational context:
-1. GERRI Specialist Portal (Desktop Layout): A data-dense operational system tailored for desktop viewports. It handles high-throughput crop classification approvals, germination trend chart analytics, deposit evaluations, and core compliance tasks.
-2. Community Seed Bank (CSB) Coordinator Portal (Progressive Web Application): A mobile-first, highly responsive web dashboard optimized for native PWA installation on phones and tablet viewports. It allows field coordinators to process registry records, submit seed loans, view live notifications, and share localized knowledge data.
-The frontend is a decoupled client layer that communicates asynchronously with the Mbegu Link remote backend service API using secure, stateless REST requests over HTTP. All data grids, analytical charts, workflow streams, and user context records are derived directly from live remote endpoints via background interceptors rather than on-device processing. System-wide components leverage a synchronized reactive model, using global state providers to broadcast transaction details and live status modifications instantly across the presentation space.
+The **Mbegu Link Frontend Web Application (`zibo-frontend`)** is a Next.js application built with React and Tailwind CSS. It serves as the primary interface for the Mbegu Link digital agriculture network.
 
-Main Functional Areas
+The application implements role-based navigation, directing authenticated users to workspaces aligned with their operational responsibilities.
 
-The web engine organizes operations across five critical architectural clusters:
-• Role-Based Gateway Routing: Security checkpoints handling multi-role logins, automated dashboard routing, session state checks, and a complete multi-step password security lifecycle (Forgot Password, Verification, Reset Password, and Change Password layouts).
-• GERRI Specialist Management Suite: Verification management data tables, real-time data charts plotting regional germination trends, asset registration audit tools, and compliance modification actions.
-• CSB Field Coordinator PWA Terminal: Fast-loading data logging modules for registering local seed types, submitting physical deposits, orchestrating micro-loan distributions, and monitoring community credit lifecycles.
-• Live In-App Notification System: A cross-portal reactive communication system that generates transient alert toasts for system status adjustments and updates badged counters on action headers.
-• Localized Context & Configuration Controls: Secure interface nodes managing personal settings profiles, user data modifications, on-demand profile photo uploads, and client appearance overrides (Light Mode, Dark Mode, or System Default).
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:24px 0;">
 
-2. Technology Stack
+<div style="border:1px solid #D7E7DA;border-top:4px solid #237A43;border-radius:12px;padding:24px;background:#FFFFFF;">
+  <div style="font-size:12px;color:#237A43;font-weight:700;letter-spacing:1.5px;">01 / INSTITUTIONAL</div>
+  <h3 style="color:#185C32;margin:12px 0;">GeRRI Specialist Portal</h3>
+  <p style="color:#4B6351;line-height:1.8;">A desktop-oriented workspace for record verification, submission reviews, conservation information, analytical dashboards, and administrative workflows.</p>
+</div>
 
+<div style="border:1px solid #D7E7DA;border-top:4px solid #68A678;border-radius:12px;padding:24px;background:#F5FAF5;">
+  <div style="font-size:12px;color:#237A43;font-weight:700;letter-spacing:1.5px;">02 / COMMUNITY</div>
+  <h3 style="color:#185C32;margin:12px 0;">CSB Coordinator Portal</h3>
+  <p style="color:#4B6351;line-height:1.8;">A responsive, mobile-first Progressive Web App experience for managing seed records, submitting loan requests, coordinating operations, and viewing notifications.</p>
+</div>
 
-Technology	Purpose	Implementation Target
-Next.js / React	Production framework utilizing automated view routing	Shell layouts, contextual pages, components
-HTTP Interceptor Client	REST endpoint networking layer with token injections	src/lib/session.js, src/lib/authApi.js
-Shared Preferences / Cache	In-browser client preference data storage persistence	Light/Dark preferences, profile metadata, flags
-ChangeNotifier Context	State mutation engine & layout change broadcasting	Global data contexts (src/lib/portalStore.js)
-Material 3 UI Theme	Seed-color interface theme builder and shadows map	Global branding configurations, component style rules
-Inter & Roboto	Global design system typography layers	Typeface asset loading configurations via next/font
+</div>
 
+The frontend communicates asynchronously with the Mbegu Link backend through REST APIs over HTTP. It presents backend data through interface components, shared application state, and workflow-specific views.
 
-2.1 Visual Appearance & Scope Specifications
+### Main Functional Areas
 
-The frontend implements systematic UI uniformity using style injection parameters maintained directly within src/lib/theme.js to manage responsive changes seamlessly across all user portals:
-• Typography Anchors: Inter handles primary workspace labels and high-priority copy blocks, supported by Roboto across analytical indicators and main headers.
-• Light / Dark Mode Adaptation: The platform features universal dark mode synchronization across both the GERRI Desktop Dashboard and the CSB Coordinator mobile layouts, dynamically tracking chart scales, dashboard cards, and the central notification center. Input containers explicitly preserve drop shadows inside dark mode frames to maintain visual structure.
-• Input Box Foundations: Controlled fields utilize borderless container architectures with crisp backdrops, custom vertical spacing buffers, and explicit htmlFor / id attribute combinations to ensure accessible control targeting.
+| Functional Area | Core Responsibilities |
+|:---|:---|
+| **Role-Based Authentication** | Login, role-specific routing, session management, and password recovery workflows. |
+| **GeRRI Specialist Workspace** | Record verification, submission reviews, conservation information, and administrative operations. |
+| **CSB Coordinator Workspace** | Seed registration, deposit records, seed loans, and community operations. |
+| **Notifications** | Status updates, notification messages, and unread indicators. |
+| **Profile and Settings** | User profile management, appearance preferences, and account settings. |
 
-2.2 Lifecycle Status & Capsule Mappings
+---
 
-Transactional processing stages, loan request tracking lists, and notification event headers map their current remote state parameters visually using color tokens configured inside src/lib/loanStatus.js:
-• Pending Verification: Warm Gold Tint (Bg: 0xFFFFF3D6, Text: 0xFF8A6800) applied to active approval queues, unread loan reminders, and initial registration check steps.
-• In Progress / Active: Light Emerald Variant (Bg: 0xFFE7F5E7, Text: 0xFF1D6B4B) applied to open seed records, running deposits, and verified database logs.
-• Finalized / Completed: Mint Green Tint (Bg: 0xFFE2F7EB, Text: 0xFF126B48) confirming successfully processed steps, approved loans, and resolved variables.
-• Rejected / Declined: Soft Crimson Tint (Bg: 0xFFFDECEC, Text: 0xFFB42318) communicating systemic alerts, missed deadlines, or administrative decline status.
+## 02 · Technology Stack
 
-3. Project Structure
+The frontend uses a modular architecture that separates application routing, presentation, shared state, and backend communication.
 
-The codebase isolates underlying networking definitions, immutable properties parsing, view components, asset libraries, and automated testing suites:
-text
+<div style="border:1px solid #D7E7DA;border-radius:12px;overflow:hidden;margin:20px 0;">
+<table style="width:100%;border-collapse:collapse;margin:0;">
+<thead>
+<tr style="background:#1F6B3B;color:white;">
+<th style="padding:14px;text-align:left;">Technology</th>
+<th style="padding:14px;text-align:left;">Purpose</th>
+<th style="padding:14px;text-align:left;">Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Next.js / React</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Application framework, routing, and interface components.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/app/</code>, <code>src/components/</code></td></tr>
+<tr style="background:#F5FAF5;"><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>HTTP Client</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">REST API communication and request configuration.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/session.js</code>, <code>src/lib/authApi.js</code></td></tr>
+<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>React Context</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Shared application state and cross-component updates.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>src/lib/portalStore.js</code></td></tr>
+<tr style="background:#F5FAF5;"><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Tailwind CSS</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Responsive layouts and utility-based styling.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><code>tailwind.config.js</code></td></tr>
+<tr><td style="padding:12px;border-bottom:1px solid #E4EDE5;"><strong>Inter / Roboto</strong></td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Typography and interface hierarchy.</td><td style="padding:12px;border-bottom:1px solid #E4EDE5;">Font configuration</td></tr>
+<tr style="background:#F5FAF5;"><td style="padding:12px;"><strong>Jest</strong></td><td style="padding:12px;">Automated testing.</td><td style="padding:12px;">Test suite and configuration</td></tr>
+</tbody>
+</table>
+</div>
+
+## 2.1 · Visual Appearance and Design System
+
+The interface uses a green-and-white visual identity inspired by Mbegu Link's focus on agriculture, conservation, and community collaboration.
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:22px 0;">
+<div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
+<div style="height:65px;background:#185C32;"></div>
+<div style="padding:12px;background:#FFFFFF;"><strong>Forest Green</strong><br><code>#185C32</code></div>
+</div>
+<div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
+<div style="height:65px;background:#237A43;"></div>
+<div style="padding:12px;background:#FFFFFF;"><strong>Brand Green</strong><br><code>#237A43</code></div>
+</div>
+<div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
+<div style="height:65px;background:#E7F2E8;"></div>
+<div style="padding:12px;background:#FFFFFF;"><strong>Soft Green</strong><br><code>#E7F2E8</code></div>
+</div>
+<div style="flex:1;min-width:125px;border-radius:10px;overflow:hidden;border:1px solid #D7E7DA;">
+<div style="height:65px;background:#FFFFFF;"></div>
+<div style="padding:12px;background:#FFFFFF;"><strong>White</strong><br><code>#FFFFFF</code></div>
+</div>
+</div>
+
+### Typography
+
+- **Inter:** Primary typography for workspace labels, page headings, and body text.
+- **Roboto:** Supporting typography for selected headings and analytical information.
+
+### Light and Dark Modes
+
+The application appearance system covers dashboard layouts, cards, forms, navigation, and notifications. Light and dark modes maintain consistent visual hierarchy and readable text.
+
+The documented theme configuration is located in `src/lib/theme.js`.
+
+### Input Components
+
+Form controls use consistent labels, spacing, borders, and validation feedback. The interface uses associated `htmlFor` and `id` attributes to improve form accessibility.
+
+---
+
+## 2.2 · Lifecycle Status and Visual Indicators
+
+Workflow statuses use distinct colors to communicate the state of seed records, loans, deposits, and verification processes.
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:20px 0;">
+
+<div style="background:#FFF3D6;border:1px solid #F0DFA9;border-radius:10px;padding:18px;">
+<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#8A6800;">PENDING</div>
+<div style="font-size:17px;font-weight:700;color:#8A6800;margin:8px 0;">Pending Verification</div>
+<div style="font-size:12px;color:#8A6800;">Background: #FFF3D6</div>
+</div>
+
+<div style="background:#E7F5E7;border:1px solid #C8E5CA;border-radius:10px;padding:18px;">
+<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#1D6B4B;">ACTIVE</div>
+<div style="font-size:17px;font-weight:700;color:#1D6B4B;margin:8px 0;">In Progress</div>
+<div style="font-size:12px;color:#1D6B4B;">Background: #E7F5E7</div>
+</div>
+
+<div style="background:#E2F7EB;border:1px solid #B8E7CC;border-radius:10px;padding:18px;">
+<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#126B48;">COMPLETED</div>
+<div style="font-size:17px;font-weight:700;color:#126B48;margin:8px 0;">Successfully Completed</div>
+<div style="font-size:12px;color:#126B48;">Background: #E2F7EB</div>
+</div>
+
+<div style="background:#FDECEC;border:1px solid #F4C7C7;border-radius:10px;padding:18px;">
+<div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#B42318;">DECLINED</div>
+<div style="font-size:17px;font-weight:700;color:#B42318;margin:8px 0;">Rejected / Declined</div>
+<div style="font-size:12px;color:#B42318;">Background: #FDECEC</div>
+</div>
+
+</div>
+
+The documented status configuration is `src/lib/loanStatus.js`.
+
+| Status | Background | Text |
+|:---|:---|:---|
+| Pending Verification | `#FFF3D6` | `#8A6800` |
+| In Progress / Active | `#E7F5E7` | `#1D6B4B` |
+| Completed | `#E2F7EB` | `#126B48` |
+| Rejected / Declined | `#FDECEC` | `#B42318` |
+
+---
+
+## 03 · Project Structure
+
+The `zibo-frontend` repository separates application routes, reusable components, shared utilities, configuration, and automated tests.
+
+```text
 zibo-frontend/
-├── .husky/                              # Automated pre-commit formatting & linter validation hooks
+├── .husky/
 ├── docs/
-│   └── openapispec.json                 # Backend OpenAPI specification documentation schema
+│   └── openapispec.json
 ├── public/
 │   ├── brand/
-│   │   └── logo.png                     # Primary corporate green Mbegu Link graphic asset
-│   ├── icon-192.png                     # Progressive Web App mobile home icon asset
-│   └── icon-512.png                     # Progressive Web App splash launcher asset
+│   │   └── logo.png
+│   ├── icon-192.png
+│   └── icon-512.png
 ├── src/
-│   ├── app/                             # Next.js App Router root layout architecture folder
+│   ├── app/
 │   │   ├── notifications/
-│   │   │   └── page.jsx                 # Comprehensive system alert dashboard view layout
+│   │   │   └── page.jsx
 │   │   ├── profile/
-│   │   │   └── page.jsx                 # Personal user data parameters and action overview
+│   │   │   └── page.jsx
 │   │   ├── settings/
-│   │   │   └── page.jsx                 # Local client configurations and style preferences terminal
-│   │   ├── layout.jsx                   # Root platform viewport wrapper and context provider
-│   │   └── page.jsx                     # Primary login portal container and authentication routing view
-│   │
+│   │   │   └── page.jsx
+│   │   ├── layout.jsx
+│   │   └── page.jsx
 │   ├── components/
 │   │   ├── auth/
-│   │   │   ├── AuthShell.jsx            # Onboarding layout presentation framework container
-│   │   │   ├── ForgotPasswordForm.jsx   # Credential recovery sequence entry sheet
-│   │   │   ├── LoginForm.jsx            # Core secure user identity entry field module
-│   │   │   ├── RoleSelector.jsx         # Post-auth conditional permission router dropdown
-│   │   │   └── TextField.jsx            # Standardized input utility containing unified labels
+│   │   │   ├── AuthShell.jsx
+│   │   │   ├── ForgotPasswordForm.jsx
+│   │   │   ├── LoginForm.jsx
+│   │   │   ├── RoleSelector.jsx
+│   │   │   └── TextField.jsx
 │   │   ├── brand/
-│   │   │   └── Logo.jsx                 # Central branding vector layout placeholder
+│   │   │   └── Logo.jsx
 │   │   ├── onboarding/
-│   │   │   └── OnboardingSlide.jsx      # Dynamic marketing layout slider utility carousel
+│   │   │   └── OnboardingSlide.jsx
 │   │   ├── portal/
-│   │   │   ├── DashboardLayout.jsx      # GERRI Specialist analytics desktop desktop wrapper
-│   │   │   ├── NotificationBell.jsx     # Live header navigation alert indicator component
-│   │   │   ├── PwaShell.jsx             # CSB Coordinator adaptive mobile application shell
-│   │   │   ├── SignOutPopup.jsx         # Multi-device security sign-out confirmation component
-│   │   │   └── StatusPill.jsx           # Unified hex-mapped state badge component caps
+│   │   │   ├── DashboardLayout.jsx
+│   │   │   ├── NotificationBell.jsx
+│   │   │   ├── PwaShell.jsx
+│   │   │   ├── SignOutPopup.jsx
+│   │   │   └── StatusPill.jsx
 │   │   └── splash/
-│   │       └── LandingSplash.jsx        # App launch persistence initialization loader view
-│   │
+│   │       └── LandingSplash.jsx
 │   ├── lib/
-│   │   ├── api.js                       # Underlying communication layer endpoint register
-│   │   ├── authApi.js                   # Remote access authentication transaction definitions
-│   │   ├── config.js                    # Core environment connection configurations
-│   │   ├── devAccount.js                # Sandbox profiles mapping dictionary
-│   │   ├── directory.js                 # Seed database classification lookup dictionaries
-│   │   ├── notifications.js             # Live push notification trigger state event handlers
-│   │   ├── password.js                  # Mutation chains processing credential configuration changes
-│   │   ├── portalApi.js                 # Shared repository log query operation models
-│   │   ├── portalStore.js               # Global state context store for role dashboard layouts
-│   │   ├── session.js                   # Axios setup providing authorization headers and status catches
-│   │   ├── sessionTools.js              # Hardware session token wipe cache tools
-│   │   ├── theme.js                     # Multi-theme layout presentation style injectors
-│   │   └── useApi.js                    # Custom React hook coordinating background REST actions
-│   │
-│   └── _tests_/                         # Comprehensive Jest implementation specification files
+│   │   ├── api.js
+│   │   ├── authApi.js
+│   │   ├── config.js
+│   │   ├── devAccount.js
+│   │   ├── directory.js
+│   │   ├── notifications.js
+│   │   ├── password.js
+│   │   ├── portalApi.js
+│   │   ├── portalStore.js
+│   │   ├── session.js
+│   │   ├── sessionTools.js
+│   │   ├── theme.js
+│   │   └── useApi.js
+│   └── __tests__/
 │       ├── api.test.js
 │       ├── ForgotPasswordForm.test.jsx
 │       ├── landing.test.jsx
@@ -119,38 +227,90 @@ zibo-frontend/
 │       ├── RoleSelector.test.jsx
 │       ├── session.test.js
 │       └── useApi.test.js
-│
-├── package.json                         # Script automation registries, tasks, and system blocks
-└── tailwind.config.js                   # Tailwind utility layout style mapping parameter lines
-Use code with caution.
+├── package.json
+└── tailwind.config.js
+```
 
-4. Architecture Layers
+### Directory Responsibilities
 
-The repository adheres to a modular design system designed to encapsulate data tracking logic and insulate presentation elements from underlying processing errors:
-text
-┌────────────────────────────────────────────────────────┐
-│                   Presentation Layer                   │
-│  Views (homescreen.dart) + Conditional Shells (PwaShell)│
-└───────────────────────────┬────────────────────────────┘
-                            │
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│                 State Management Layer                 │
-│    Context Providers & Event Emitters (portalStore.js)   │
-└───────────────────────────┬────────────────────────────┘
-                            │
-                            ▼
-┌────────────────────────────────────────────────────────┐
-│                     Service Layer                      │
-│   session.js Middleware / Endpoints (portalApi.js)     │
-└───────────────────────────┬────────────────────────────┘
-│                           │                            │
-│                           ▼                            │
-│               [Mbegu Link Remote Backend]              │
-│               REST API Transaction Boundaries          │
-│                           │                            │
-│                           ▼                            │
-┌────────────────────────────────────────────────────────┐
-│                   Data/Model Layer                     │
-│  OpenAPI JSON Specifications & Preference Disk Caches  │
-└────────────────────────────────────────────────────────┘
+| Directory / File | Responsibility |
+|:---|:---|
+| `src/app/` | Application routes and shared layouts |
+| `src/components/auth/` | Authentication forms and components |
+| `src/components/brand/` | Branding and logo components |
+| `src/components/onboarding/` | Onboarding interface components |
+| `src/components/portal/` | Dashboard layouts, notifications, and status indicators |
+| `src/components/splash/` | Application initialization and splash interface |
+| `src/lib/api.js` | Shared API communication |
+| `src/lib/authApi.js` | Authentication API operations |
+| `src/lib/portalApi.js` | Portal API operations |
+| `src/lib/portalStore.js` | Shared portal state |
+| `src/lib/session.js` | HTTP client and session request configuration |
+| `src/lib/theme.js` | Theme and appearance configuration |
+| `__tests__/` | Automated application tests |
+| `package.json` | Dependencies and project scripts |
+| `tailwind.config.js` | Tailwind CSS configuration |
+
+---
+
+## 04 · Architecture Layers
+
+The frontend separates the presentation, state management, service, and data-handling responsibilities.
+
+<div style="border:1px solid #D7E7DA;border-radius:14px;padding:24px;background:#F8FBF8;margin:24px 0;">
+
+<div style="background:#185C32;color:white;text-align:center;padding:20px;border-radius:10px;">
+<div style="font-size:11px;letter-spacing:2px;opacity:.8;">LAYER 01</div>
+<div style="font-size:19px;font-weight:700;margin:6px 0;">Presentation Layer</div>
+<div style="font-size:13px;color:#E5F5E8;">Next.js · React · Application Views</div>
+</div>
+
+<div style="text-align:center;font-size:24px;color:#47845E;padding:8px;">↕</div>
+
+<div style="background:#E7F2E8;border:1px solid #C8DFCC;color:#185C32;text-align:center;padding:20px;border-radius:10px;">
+<div style="font-size:11px;letter-spacing:2px;">LAYER 02</div>
+<div style="font-size:19px;font-weight:700;margin:6px 0;">State Management</div>
+<div style="font-size:13px;">React Context · Hooks · portalStore.js</div>
+</div>
+
+<div style="text-align:center;font-size:24px;color:#47845E;padding:8px;">↕</div>
+
+<div style="background:#E7F2E8;border:1px solid #C8DFCC;color:#185C32;text-align:center;padding:20px;border-radius:10px;">
+<div style="font-size:11px;letter-spacing:2px;">LAYER 03</div>
+<div style="font-size:19px;font-weight:700;margin:6px 0;">Service Layer</div>
+<div style="font-size:13px;">HTTP Client · session.js · portalApi.js</div>
+</div>
+
+<div style="text-align:center;font-size:24px;color:#47845E;padding:8px;">↕</div>
+
+<div style="background:#FFFFFF;border:2px solid #237A43;color:#185C32;text-align:center;padding:20px;border-radius:10px;">
+<div style="font-size:11px;letter-spacing:2px;">LAYER 04</div>
+<div style="font-size:19px;font-weight:700;margin:6px 0;">Mbegu Link Backend</div>
+<div style="font-size:13px;">REST API · Business Logic · Data Persistence</div>
+</div>
+
+</div>
+
+### Presentation Layer
+
+Responsible for rendering pages, dashboard layouts, authentication forms, reusable components, and responsive interfaces.
+
+### State Management Layer
+
+Coordinates shared portal state, interface updates, notification indicators, and relevant application context through React Context and related hooks.
+
+### Service Layer
+
+Handles API requests, authentication headers, response processing, and communication with backend endpoints.
+
+### Data and Model Layer
+
+Represents the data exchanged through API contracts, including seed records, workflow statuses, user information, and supported application preferences.
+
+---
+
+<div style="margin-top:36px;padding:24px;background:#185C32;border-radius:12px;color:#FFFFFF;text-align:center;">
+<div style="font-size:12px;letter-spacing:2px;color:#BFE3C7;">ZIBO · MBEGU LINK</div>
+<div style="font-size:20px;font-weight:700;margin:10px 0;">Technology Supporting Seed Conservation</div>
+<div style="font-size:13px;line-height:1.8;color:#E5F5E8;">A connected frontend experience for community seed banks and institutional conservation partners.</div>
+</div>
