@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --brand-primary: #02261a;
+  --brand-primary: #228B22;
   --brand-accent: #228155;
   --brand-text: #2e2b2b;
 }
@@ -11,6 +11,10 @@
   --md-accent-fg-color: var(--brand-accent);
   --md-typeset-color: var(--brand-text);
   --md-typeset-a-color: var(--brand-primary);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #228B22 !important;
 }
 
 html, body {
@@ -53,14 +57,13 @@ html, body {
 }
 
 .hero-text {
-  color: #FFFFFF !important; /* Normal white for maximum visibility over dark tint */
+  color: #FFFFFF !important; 
   margin: 0 !important;
   font-size: 1.05rem;
   line-height: 1.6;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Lightbox */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -106,4 +109,11 @@ html, body {
 @keyframes lightboxFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.md-header {
+  background: #004F2E !important;
+}
+.md-header__topic {
+  color: #FFFFFF !important;
 }
