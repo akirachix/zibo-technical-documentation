@@ -1,16 +1,45 @@
-# <span style="color:#237A43">Frontend Web Documentation</span>
+# Frontend Web Documentation
 
-<div style="background:linear-gradient(135deg,#164E2B 0%,#237A43 60%,#4D9B62 100%);color:white;padding:36px 32px;border-radius:16px;margin:24px 0;">
-  <div style="font-size:12px;letter-spacing:3px;text-transform:uppercase;opacity:0.85;">MBEGU LINK · ZIBO</div>
-  <h2 style="color:white;font-size:30px;margin:14px 0 10px;">Connecting Communities Through Seed Conservation</h2>
-  <p style="font-size:15px;line-height:1.8;margin:0;color:#F0FDF4;">A role-based web platform for community seed banks and institutional specialists, bringing seed records, conservation workflows, and operational information into one connected experience.</p>
-  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;">
-    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">Next.js</span>
-    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">React</span>
-    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">Tailwind CSS</span>
-    <span style="background:#FFFFFF20;border:1px solid #FFFFFF50;border-radius:20px;padding:7px 14px;font-size:12px;color:white;">REST API</span>
+<div style="text-align: center; margin: 2rem auto; max-width: 1050px; width: 100%;">
+  <div class="lightbox-wrapper" style="text-align: center;">
+    <img src="../assets/brand/pwa.png" alt="PWA Overview" style="width: 100%; height: auto; display: block; margin: 0 auto; cursor: zoom-in;" />
   </div>
 </div>
+
+<div class="lightbox" id="pwaLightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <button class="lightbox__close" id="pwaLightboxClose" aria-label="Close">×</button>
+  <img class="lightbox__image" id="pwaLightboxImage" alt="PWA Overview" />
+</div>
+
+<script>
+(function(){
+  var img = document.querySelector('.lightbox-wrapper img');
+  var lightbox = document.getElementById('pwaLightbox');
+  var lightboxImage = document.getElementById('pwaLightboxImage');
+  var closeBtn = document.getElementById('pwaLightboxClose');
+  if(!img || !lightbox) return;
+  function openLightbox(){
+    lightboxImage.src = img.src;
+    lightboxImage.alt = img.alt;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+  img.addEventListener('click', openLightbox);
+  closeBtn.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', function(e){
+    if(e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
+})();
+</script>
 
 ## 01 · Overview
 

@@ -10,7 +10,6 @@ QA strategy link — <a href="https://docs.google.com/document/d/18CuEQn57O2Yyi7
 - **Integration Tests:** Cover boundary layers between the FastAPI service and the PostgreSQL database engine (multi-tenant tenant schema isolation, route guards, token lifespan invalidation, and server-side row permissions).
 - **End-to-End (E2E) Tests:** Trace user workflow paths across application clients (custodian entry logging, coordinator transfer approval tracks, and GeRRI support ticket workflows).
 - **User Acceptance Testing (UAT):** Checked directly with regional custodians and network coordinators from partner Community Seed Banks to confirm software layout accuracy prior to production builds.
-QA Test cases - link — <a href="https://docs.google.com/spreadsheets/d/1IWvGNbutyyu8_P2JL0YCgahUEA5XxGamPDlirPBMF0I/edit?usp=sharing" target="_blank" rel="noopener noreferrer">View in Excel sheet</a>
 
 ### Defect Severity Definitions
 - **Critical:** Complete data loss, multi-tenant isolation breach, misassigned seed custody, or false flags leading to crop damage.
@@ -19,6 +18,7 @@ QA Test cases - link — <a href="https://docs.google.com/spreadsheets/d/1IWvGNb
 - **Low:** Cosmetic layout imperfections, font sizes, or text wrapping bugs.
 
 ## Essential Test Matrix
+QA Test cases - link — <a href="https://docs.google.com/spreadsheets/d/1IWvGNbutyyu8_P2JL0YCgahUEA5XxGamPDlirPBMF0I/edit?usp=sharing" target="_blank" rel="noopener noreferrer">View in Excel sheet</a>
 
 | Case ID | Module | Priority | Type | Test Case Description | Expected Verification Result |
 |:---|:---|:---|:---|:---|:---|
@@ -27,7 +27,6 @@ QA Test cases - link — <a href="https://docs.google.com/spreadsheets/d/1IWvGNb
 | **TC-QA-03** | Registry | High | Functional | Register a variety with an unknown scientific taxonomy name | Record saved successfully with a `NULL` scientific metadata marker |
 | **TC-QA-04** | Registry | High | Boundary | Germination result exactly at the configured threshold boundary (e.g., 75.00%) | Attention flag does not fire; boundary is handled inclusively per community rule |
 | **TC-QA-05** | Registry | High | Negative | Two custodians register the same local seed name for different biological crops | Two distinct variety records generated; silent deduplication merges blocked |
-
 
 ## End-to-End Testing with Cypress
 
@@ -113,9 +112,6 @@ Cypress.Commands.add('loginAsCoordinator', (csb) => {
 * **Database State Reset:** Execute an explicit database reseed hook (`cy.task('db:seed')`) before launching each test execution loop to clear out stray mutations.
 * **Boundary Validation Security:** Keep the explicit `403-isolation` checks active within every single end-to-end journey. These assertions serve as high-value perimeter guards, mapping back to core security requirements `TC-QA-01` and `TC-QA-14`.
 * **Case ID Numbering Scheme:** The test cases are systematically numbered `TC-QA-01` through `TC-QA-20` to separate them from separate component module tracking ranges within shared spreadsheets.
-
-<details>
-<summary style="cursor: pointer; color: #004F2E; font-weight: bold; margin: 15px 0; text-decoration: underline;">📋 Show API Contract Testing Details</summary>
 
 ## API Contract Testing via Postman
 
@@ -214,5 +210,3 @@ Ensures the server rejects structurally malformed parameters at the API perimete
     "input": "81f606ac5-e1f7-4111-8111-111111111111"
   }
   ```
-
-</details>

@@ -7,7 +7,7 @@ This page shows the system structure: the components, how data flows between the
 <div class="lightbox-wrapper" style="text-align: center; margin: 1.5rem 0;">
   <img src="../assets/brand/sad.png" alt="Mbegu Link SAD" style="max-width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; border: 1px solid #e1e4e6;" />
   <p style="font-style: italic; margin-top: 0.5rem; color: #555;">
-    Figure: System Architecture Diagram (SAD). Click on the image to view it full screen. Source: Lucidchart, Mbegu Link board.
+    Figure: System Architecture Diagram (SAD). <a href="https://lucid.app/lucidspark/be73d626-2a49-4f89-9715-48bca0a7fc51/edit?viewport_loc=-2948%2C-1715%2C6845%2C3892%2C0_0&invitationId=inv_18293e0f-b177-405a-8bb2-49204be1bce8" target="_blank" rel="noopener noreferrer">View SAD in Lucidchart</a>
   </p>
 </div>
 
@@ -57,7 +57,8 @@ This page shows the system structure: the components, how data flows between the
 | **request** | Structured loan, storage and conservation-support requests with lifecycle status | Links requester, holding and target organisation |
 | **knowledge_entry** | Practical knowledge with private (default) or public visibility, tags and archive flag | Belongs to one organisation; may link one variety |
 | **media_file** | References to photos and videos held in media storage; upload queued until a connection is available | Belongs to one knowledge entry |
-| **audit_record** | Append-only trail of system transactions and structural access data | Managed globally at server execution layer |
+| **audit_record** | Append-only trail of system transactions and structural access data | Managed globally at server execution layer 
+Link to Data models — <a href="https://docs.google.com/document/d/1NR96Tagi8l5oYZitYwxOw4wsyQlLBHSkolxf_zupkC4/edit?usp=sharing" target="_blank" rel="noopener noreferrer">View Data Models in Google Doc</a>
 
 ## Data flow
 
