@@ -1,6 +1,6 @@
 # Overview
 
-Mbegu Link is a working system built by Team Zibo (AkiraChix). This page describes what the current MVP is, how the pieces fit together, and the technical decisions behind it. You can download the complete [Research Material and Problem Statement here (PDF)](assets/brand/research.pdf).
+Mbegu Link is a working system built by Team Zibo (AkiraChix). This page describes what the current MVP is, how the pieces fit together, and the technical decisions behind it. You can download the complete. Link to our research documents [Research Material and Problem Statement here (PDF)](assets/brand/research.pdf).
 
 ## What the system is
 
