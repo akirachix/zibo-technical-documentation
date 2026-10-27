@@ -5,7 +5,7 @@
     <img src="assets/brand/starting.png" alt="Mbegu Link Platform Overview" style="width: 100%; height: auto; display: block; margin: 0 auto; cursor: zoom-in;" />
   </div>
   <div style="margin-top: 2rem;">
-    <button onclick="revealContent()" style="background-color: #0f422d; color: #ffffff; padding: 6px 8px; font-size: 1.25rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">Get Started &rarr;</button>
+    <button onclick="revealContent()" style="background-color: #e6e8e7; color: #092c1e; padding: 3px 5px; font-size: 1.25rem; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">Get Started &rarr;</button>
   </div>
 </div>
 
