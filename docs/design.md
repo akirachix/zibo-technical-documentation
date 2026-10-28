@@ -86,7 +86,7 @@ Ten line icons cover the main concepts: people, link, sprout (seed), profile, li
 ### Zibo team style guide
 
 <figure markdown>
-  ![Zibo style guide: logo variations, colour palette, icons, buttons and typography](assets/brand/style%20guide%202.png){ width="300" }
+  ![Zibo style guide: logo variations, colour palette, icons, buttons and typography](assets/brand/style%20guide2.png){ width="300" }
   <figcaption>Zibo team style guide: logo, palette, icons, buttons and typography.</figcaption>
 </figure>
 
