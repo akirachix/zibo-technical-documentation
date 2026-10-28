@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
   --brand-primary: #228B22;
@@ -20,7 +20,7 @@ h1, h2, h3, h4, h5, h6 {
 html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
-
+v
 .md-header__button.md-logo img {
   height: 2.4rem;
   width: auto;
@@ -116,4 +116,455 @@ html, body {
 }
 .md-header__topic {
   color: #FFFFFF !important;
+} */
+ @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   Mbegu Link / Zibo documentation theme
+   Palette
+     --zibo-sage    #EDF5E5  page background
+     --zibo-mint    #D9EBCB  tints, borders, active states
+     --zibo-leaf    #228B22  brand green (existing)
+     --zibo-forest  #004F2E  header, titles (existing)
+     --zibo-lime    #A8D84E  small accents only
+     --zibo-ink     #1F2A22  body text
+   ========================================================================== */
+
+:root {
+  --zibo-sage: #EDF5E5;
+  --zibo-mint: #D9EBCB;
+  --zibo-mint-soft: #F4F9EF;
+  --zibo-leaf: #228B22;
+  --zibo-forest: #004F2E;
+  --zibo-lime: #A8D84E;
+  --zibo-ink: #1F2A22;
+  --zibo-link: #1B6E34;
+
+  --radius-sheet: 24px;
+  --radius-panel: 16px;
+  --radius-control: 999px;
+
+  --brand-primary: var(--zibo-leaf);
+  --brand-accent: #228155;
+  --brand-text: var(--zibo-ink);
+}
+
+[data-md-color-scheme="default"] {
+  --md-default-bg-color: var(--zibo-sage);
+  --md-primary-fg-color: var(--zibo-forest);
+  --md-accent-fg-color: var(--zibo-leaf);
+  --md-typeset-color: var(--zibo-ink);
+  --md-typeset-a-color: var(--zibo-link);
+  --md-code-bg-color: var(--zibo-mint-soft);
+}
+
+/* ---------- Page background -------------------------------------------- */
+
+html,
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--zibo-sage);
+}
+
+.md-container {
+  background-color: var(--zibo-sage);
+  /* two soft, leaf-like washes at the top of the page */
+  background-image:
+    radial-gradient(60rem 28rem at 100% 0%, rgba(168, 216, 78, 0.12), transparent 70%),
+    radial-gradient(48rem 24rem at 0% 14%, rgba(34, 139, 34, 0.05), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+.md-main {
+  background: transparent;
+}
+
+.md-grid {
+  max-width: 70rem;
+}
+
+/* ---------- Header ------------------------------------------------------ */
+
+.md-header {
+  background: linear-gradient(100deg, #003D24 0%, var(--zibo-forest) 45%, #1B7A3C 100%) !important;
+  border-radius: 0;
+  box-shadow: 0 2px 10px rgba(0, 79, 46, 0.18);
+}
+
+.md-header__topic,
+.md-header__title {
+  color: #FFFFFF !important;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.md-header__button.md-logo img {
+  height: 2.4rem;
+  width: auto;
+}
+
+.md-search__form {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-control);
+}
+
+.md-search__form:hover,
+.md-search__input:focus {
+  background: rgba(255, 255, 255, 0.26);
+}
+
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  background: #FFFFFF;
+}
+
+.md-search__output {
+  border-radius: 0 0 var(--radius-panel) var(--radius-panel);
+}
+
+/* ---------- Reading sheet (main content) ------------------------------- */
+
+.md-content__inner {
+  background: #FFFFFF;
+  border-radius: var(--radius-sheet);
+  box-shadow: 0 1px 2px rgba(0, 79, 46, 0.06), 0 12px 32px rgba(0, 79, 46, 0.08);
+  margin: 1.6rem 0.8rem 2.4rem;
+  padding: 1.2rem 2.2rem 2rem;
+}
+
+/* ---------- Typography -------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--zibo-leaf) !important;
+}
+
+.md-typeset h1 {
+  color: var(--zibo-forest) !important;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+
+/* short lime-to-leaf bar above each page title */
+.md-typeset h1::before {
+  content: "";
+  display: block;
+  width: 2.6rem;
+  height: 4px;
+  margin-bottom: 0.7rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--zibo-lime), var(--zibo-leaf));
+}
+
+.md-typeset h2 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: 2.2em;
+  padding-bottom: 0.35em;
+  border-bottom: 2px solid var(--zibo-mint);
+}
+
+.md-typeset h3 {
+  font-weight: 650;
+  margin-top: 1.8em;
+}
+
+.md-typeset p,
+.md-typeset li {
+  line-height: 1.7;
+}
+
+.md-typeset a:hover {
+  color: var(--zibo-leaf);
+}
+
+.md-typeset hr {
+  border-bottom: 2px solid var(--zibo-mint);
+}
+
+/* ---------- Navigation -------------------------------------------------- */
+
+/* Title and links share the same left padding, so their text lines up
+   and the pill's left edge sits exactly on the sidebar edge. */
+.md-sidebar .md-nav__title {
+  color: var(--zibo-forest);
+  font-weight: 700;
+  padding: 0 0.9rem 0.4rem 1.5rem !important;
+  background-color: var(--zibo-sage);
+  box-shadow: 0 0 0.4rem 0.4rem var(--zibo-sage);
+}
+
+.md-nav__link {
+  border-radius: var(--radius-control);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.md-nav--primary .md-nav__link,
+.md-nav--secondary .md-nav__link {
+  padding: 0.4rem 0.9rem;
+  margin: 0.1rem 0;
+}
+
+.md-nav__link:hover {
+  background-color: rgba(168, 216, 78, 0.22);
+  color: var(--zibo-forest);
+}
+
+/* active page: fuller pill with a visible outline */
+.md-nav__link--active,
+.md-nav--primary .md-nav__item--active > .md-nav__link {
+  background-color: var(--zibo-mint);
+  box-shadow: inset 0 0 0 1.5px #9CCB7A;
+  color: var(--zibo-forest) !important;
+  font-weight: 700;
+}
+
+/* ---------- Tables ------------------------------------------------------ */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--zibo-mint);
+  border-radius: var(--radius-panel);
+  border-collapse: separate;
+  border-spacing: 0;
+  box-shadow: none;
+  overflow: hidden;
+  background-color: #FFFFFF;
+  font-size: 0.72rem;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--zibo-mint);
+  color: var(--zibo-forest);
+  font-weight: 700;
+  border-bottom: 1px solid #C5DDB2;
+}
+
+.md-typeset table:not([class]) td {
+  border-top: 1px solid #E6F0DD;
+}
+
+.md-typeset table:not([class]) tbody tr:first-child td {
+  border-top: none;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background-color: var(--zibo-mint-soft);
+}
+
+/* ---------- Code -------------------------------------------------------- */
+
+.md-typeset code {
+  background-color: var(--zibo-sage);
+  color: #17583A;
+  border-radius: 6px;
+  padding: 0.1em 0.4em;
+}
+
+.md-typeset pre > code {
+  background-color: var(--zibo-mint-soft);
+  color: var(--zibo-ink);
+  padding: 0.9rem 1.1rem;
+}
+
+.md-typeset .highlight {
+  border: 1px solid var(--zibo-mint);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+}
+
+.md-typeset .highlight pre,
+.md-typeset .highlight pre > code {
+  border-radius: 0;
+}
+
+/* ---------- Admonitions ------------------------------------------------- */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: var(--radius-panel);
+  border-width: 0 0 0 4px;
+  box-shadow: none;
+  background-color: var(--zibo-mint-soft);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary {
+  background-color: rgba(168, 216, 78, 0.22);
+  border-radius: 0 var(--radius-panel) 0 0;
+}
+
+/* ---------- Buttons (for .md-button usage) ------------------------------ */
+
+.md-typeset .md-button {
+  border-radius: var(--radius-control);
+  border: 2px solid var(--zibo-leaf);
+  color: var(--zibo-forest);
+  font-weight: 600;
+  padding: 0.5em 1.4em;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.md-typeset .md-button--primary {
+  background: linear-gradient(100deg, var(--zibo-leaf), #5DB12E);
+  border-color: transparent;
+  color: #FFFFFF;
+}
+
+.md-typeset .md-button:hover {
+  background-color: var(--zibo-lime);
+  border-color: var(--zibo-lime);
+  color: var(--zibo-forest);
+}
+
+/* ---------- Images ------------------------------------------------------ */
+
+.md-typeset img {
+  border-radius: var(--radius-panel);
+}
+
+/* ---------- Hero (index.md) -------------------------------------------- */
+
+.hero-container {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: var(--radius-sheet);
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(0, 79, 46, 0.18);
+}
+
+.md-typeset .hero-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+  border-radius: 0;
+  transition: opacity 0.25s ease;
+}
+
+.hero-container a:hover .hero-image {
+  opacity: 0.9;
+}
+
+/* floating rounded panel, echoing the capsule cards in the reference designs */
+.hero-overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: linear-gradient(100deg, rgba(0, 61, 36, 0.92), rgba(0, 79, 46, 0.86) 60%, rgba(27, 122, 60, 0.82));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 1.4rem 1.6rem;
+}
+
+.hero-text {
+  color: #FFFFFF !important;
+  margin: 0 !important;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---------- Footer ------------------------------------------------------ */
+
+.md-footer {
+  background: transparent;
+}
+
+.md-footer-meta {
+  background: var(--zibo-forest);
+  border-radius: 0;
+}
+
+/* ---------- Scrollbar & focus ------------------------------------------ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--zibo-leaf) transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--zibo-lime);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- Lightbox (architecture.md, security.md) -- unchanged -------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  box-sizing: border-box;
+  animation: lightboxFadeIn 0.25s ease;
+}
+.lightbox.open { display: flex; }
+.lightbox__image {
+  max-width: 92vw;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  display: block;
+  border-radius: 0.6rem;
+  box-shadow: 0 14px 48px rgba(0, 0, 0, 0.55);
+}
+.lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10010;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+.lightbox__close:hover { background: rgba(0, 0, 0, 0.9); }
+@keyframes lightboxFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Small screens ---------------------------------------------- */
+
+@media screen and (max-width: 76.1875em) {
+  .md-content__inner {
+    margin: 1rem 0.5rem 1.6rem;
+    padding: 1rem 1.2rem 1.6rem;
+    border-radius: 20px;
+  }
+}
+
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .hero-image { height: 260px; }
+  .hero-overlay {
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    padding: 1rem 1.1rem;
+  }
+  .hero-text { font-size: 0.7rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }
