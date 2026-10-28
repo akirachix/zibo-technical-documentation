@@ -20,8 +20,8 @@ The mark is a leaf-shaped **M**. Together with the lowercase wordmark it reads *
 
 | For dark backgrounds | For light backgrounds |
 |:---:|:---:|
-| <div class="logo-tile logo-tile--dark" markdown>![Mbegu Link logo, white wordmark](assets/brand/logo%20in%20white.png)</div> | <div class="logo-tile" markdown>![Mbegu Link logo, black wordmark](assets/brand/logo%20in%20black.png)</div> |
-| `logo in white.png` | `logo in black.png` |
+| <div class="logo-tile logo-tile--dark" markdown>![Mbegu Link logo, white wordmark](assets/brand/logo-in-white.png)</div> | <div class="logo-tile" markdown>![Mbegu Link logo, black wordmark](assets/brand/logo-in-black.png)</div> |
+| `logo-in-white.png` | `logo-in-black.png` |
 
 The default logo (`logo.png`) is the dark-background version and is used in the header of this site.
 
@@ -36,14 +36,14 @@ The Zibo mark, an atom-style ring around the team name, identifies the team rath
 ### Mbegu Link product style guide
 
 <figure markdown>
-  ![Mbegu Link style guide: logo, icons, colour palette, buttons and typography](assets/brand/style%20guide.png){ width="400" }
+  ![Mbegu Link style guide: logo, icons, colour palette, buttons and typography](assets/brand/style-guide.png){ width="400" }
   <figcaption>Mbegu Link style guide: logo, icons, palette, buttons and typography.</figcaption>
 </figure>
 
 ### Zibo product style guide
 
 <figure markdown>
-  ![Zibo style guide: logo, icons, colour palette, buttons and typography](assets/brand/style%20guide2.png){ width="400" }
+  ![Zibo style guide: logo, icons, colour palette, buttons and typography](assets/brand/style-guide2.png){ width="400" }
   <figcaption>zibo Link style guide: logo, icons, palette, buttons and typography.</figcaption>
 </figure>
 
@@ -86,8 +86,9 @@ Ten line icons cover the main concepts: people, link, sprout (seed), profile, li
 ### Zibo team style guide
 
 <figure markdown>
-  ![Zibo style guide: logo variations, colour palette, icons, buttons and typography](assets/brand/style%20guide2.png){ width="300" }
-  <figcaption>Zibo team style guide: logo, palette, icons, buttons and typography.</figcaption>
+  ![Zibo style guide: logo variations, colour palette, icons, buttons and typography](assets/brand/style-guide2.png){ width="300" }
+
+]=ofigcaption>Zibo team style guide: logo, palette, icons, buttons and typography.</figcaption>
 </figure>
 
 | Swatch | Hex | Role |
