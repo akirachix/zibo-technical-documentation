@@ -175,10 +175,70 @@ from decimal import Decimal
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+
 from database import Base
 from models.events import Event, EventType
+from models.organisations import Organisation, OrganisationType
+from models.seed_registry import SeedRegistry
+from models.users import User, UserRole
 
 pytestmark = pytest.mark.filterwarnings("ignore::sqlalchemy.exc.SAWarning")
+
+
+def temp_expiry(hours=72):
+    return datetime.now(timezone.utc) + timedelta(hours=hours)
+
+
+@pytest.fixture
+def db():
+    engine = create_engine(
+        "sqlite://",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(bind=engine)
+    session = sessionmaker(bind=engine)()
+    yield session
+    session.close()
+    Base.metadata.drop_all(bind=engine)
+    engine.dispose()
+
+
+@pytest.fixture
+def organisation(db):
+    org = Organisation(name="Kitui CSB", organisation_type=OrganisationType.csb)
+    db.add(org)
+    db.flush()
+    return org
+
+
+@pytest.fixture
+def seed_and_user(db, organisation):
+    user = User(
+        organisation_id=organisation.organisation_id,
+        first_name="Wanjiru",
+        last_name="Njoroge",
+        email="wanjiru@kitui-csb.test",
+        password_hash="hashed-temp-password",
+        role=UserRole.csb_coordinator,
+        must_change_password=True,
+        temp_password_expires_at=temp_expiry(),
+    )
+    seed = SeedRegistry(
+        organisation_id=organisation.organisation_id,
+        lot_code=f"CSB-TST-{uuid.uuid4().hex[:6].upper()}",
+        source_name="Local farmer",
+        seed_local_name="Gadam",
+        variety_name="Serena",
+        quantity=Decimal("10"),
+        quantity_unit="kg",
+        date_received=date(2026, 10, 21),
+    )
+    db.add_all([user, seed])
+    db.flush()
+    return seed, user
 
 
 def test_defaults_are_applied(db, seed_and_user):
@@ -187,6 +247,8 @@ def test_defaults_are_applied(db, seed_and_user):
     assert user.is_active is False
     assert user.otp_attempts == 0
     assert seed.quantity_unit == "kg"
+    assert seed.organisation.germination_threshold == Decimal("75.00")
+    assert seed.organisation.is_verified is False
 
 
 def test_germination_percent_is_calculated(db, seed_and_user):
@@ -204,6 +266,29 @@ def test_germination_percent_is_calculated(db, seed_and_user):
     assert test_event.germination_percent == Decimal("82.00")
 
 
+def test_germinated_cannot_exceed_tested(db, seed_and_user):
+    seed, user = seed_and_user
+    db.add(
+        Event(
+            seed_registry_id=seed.seed_registry_id,
+            recorded_by=user.user_id,
+            event_type=EventType.germination_test,
+            event_date=date(2026, 1, 15),
+            seeds_tested=10,
+            seeds_germinated=20,
+        )
+    )
+    with pytest.raises(IntegrityError):
+        db.commit()
+    db.rollback()
+
+
+def assert_rejected(db, user):
+    db.add(user)
+    with pytest.raises(IntegrityError):
+        db.commit()
+    db.rollback()
+
 
 def test_custodian_defaults(db, organisation):
     user = User(
@@ -219,6 +304,49 @@ def test_custodian_defaults(db, organisation):
     assert user.otp_attempts == 0
     assert user.must_change_password is False
     assert user.otp_hash is None
+    assert user.created_by is None
+    assert user.created_at is not None
+    assert user.updated_at is not None
+
+
+def test_admin_needs_no_organisation(db):
+    admin = User(
+        first_name="Admin",
+        last_name="One",
+        email="admin@mbegulink.test",
+        password_hash="hashed",
+        role=UserRole.admin,
+    )
+    db.add(admin)
+    db.commit()
+    assert admin.organisation_id is None
+
+
+def test_coordinator_records_the_admin_who_created_it(db, organisation):
+    admin = User(
+        first_name="Admin",
+        last_name="One",
+        email="admin@mbegulink.test",
+        password_hash="hashed",
+        role=UserRole.admin,
+    )
+    db.add(admin)
+    db.flush()
+    coordinator = User(
+        organisation_id=organisation.organisation_id,
+        first_name="Amina",
+        last_name="Otieno",
+        email="amina@kitui-csb.test",
+        password_hash="hashed-temp-password",
+        role=UserRole.csb_coordinator,
+        must_change_password=True,
+        temp_password_expires_at=temp_expiry(),
+        created_by=admin.user_id,
+    )
+    db.add(coordinator)
+    db.commit()
+    assert coordinator.creator.user_id == admin.user_id
+
 
 def test_non_admin_requires_organisation(db):
     assert_rejected(
@@ -245,13 +373,67 @@ def test_custodian_requires_phone_number(db, organisation):
 
 
 @pytest.mark.parametrize("role", [UserRole.csb_coordinator, UserRole.gerri_specialist])
+def test_staff_requires_email_and_password(db, organisation, role):
+    assert_rejected(
+        db,
+        User(
+            organisation_id=organisation.organisation_id,
+            first_name="No",
+            last_name="Email",
+            role=role,
+            temp_password_expires_at=temp_expiry(),
+        ),
+    )
+
+
+@pytest.mark.parametrize("role", [UserRole.csb_coordinator, UserRole.gerri_specialist])
 def test_staff_requires_temp_password_expiry(db, organisation, role):
     assert_rejected(
         db,
         User(
             organisation_id=organisation.organisation_id,
             first_name="No",
+            last_name="Expiry",
+            email="noexpiry@csb.test",
+            password_hash="hashed",
             role=role,
+        ),
+    )
+
+
+def test_otp_attempts_cannot_be_negative(db, organisation):
+    assert_rejected(
+        db,
+        User(
+            organisation_id=organisation.organisation_id,
+            first_name="Neg",
+            last_name="Attempts",
+            phone_number="+254700000003",
+            role=UserRole.custodian,
+            otp_attempts=-1,
+        ),
+    )
+
+
+def test_phone_number_must_be_unique(db, organisation):
+    db.add(
+        User(
+            organisation_id=organisation.organisation_id,
+            first_name="First",
+            last_name="Owner",
+            phone_number="+254700000004",
+            role=UserRole.custodian,
+        )
+    )
+    db.commit()
+    assert_rejected(
+        db,
+        User(
+            organisation_id=organisation.organisation_id,
+            first_name="Second",
+            last_name="Owner",
+            phone_number="+254700000004",
+            role=UserRole.custodian,
         ),
     )
 
@@ -263,6 +445,8 @@ def test_email_must_be_unique(db, organisation):
             first_name="First",
             last_name="Owner",
             email="same@csb.test",
+            password_hash="hashed",
+            role=UserRole.csb_coordinator,
             temp_password_expires_at=temp_expiry(),
         )
     )
@@ -273,6 +457,10 @@ def test_email_must_be_unique(db, organisation):
             organisation_id=organisation.organisation_id,
             first_name="Second",
             last_name="Owner",
+            email="same@csb.test",
+            password_hash="hashed",
+            role=UserRole.gerri_specialist,
+            temp_password_expires_at=temp_expiry(),
         ),
     )
 ```

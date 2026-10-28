@@ -171,7 +171,7 @@ The mobile and web applications use a clean, layered structure to separate user 
 *   **Data/Model Layer:** Maps incoming JSON server responses directly into structured data shapes.
 
 <div class="mobile-lightbox-wrapper" style="text-align: center; margin: 1.5rem 0;">
-  <img src="../assets/brand/mobilee.png" alt="Mobile App Overview" id="mobileTriggerImg" style="max-width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; border: 1px solid #e1e4e6;" />
+  <img src="../assets/brand/mobile.png" alt="Mobile App Overview" id="mobileTriggerImg" style="max-width: 100%; height: auto; border-radius: 8px; cursor: zoom-in; border: 1px solid #e1e4e6;" />
   <p style="font-style: italic; margin-top: 0.5rem; color: #555;">
     Figure: Mobile App Overview. Different screen, and different colours.
   </p>

@@ -29,9 +29,10 @@ Getting Started is the "how do I run this project on my machine". A new teammate
 The project has three repositories under the akirachix org:
 
 ```bash
-git clone https://github.com
-git clone https://github.com
-git clone https://github.com
+git clone https://github.com/akirachix/zibo-backend
+git clone https://github.com/akirachix/zibo-mobile
+git clone https://github.com/akirachix/zibo-frontend
+git clone https://github.com/akirachix/zibo-informational-website
 ```
 
 ## 2. Run the backend

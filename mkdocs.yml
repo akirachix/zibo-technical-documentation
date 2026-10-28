@@ -51,5 +51,6 @@ nav:
   - Mobile: mobile.md
   - Security: security.md
   - Testing and QA: testing.md
+  - Design : design.md
   - Deployment: deployment.md
   - Glossary: glossary.md
